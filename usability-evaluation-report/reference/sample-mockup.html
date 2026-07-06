@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>UX 用户评估报告 - 示意 v3</title>
+<style>
+  :root {
+    --bg: #fafaf8;
+    --bg-alt: #f3f2ed;
+    --bg-card: #ffffff;
+    --text: #1a1a1a;
+    --text-2: #5a5a55;
+    --text-3: #8e8e88;
+    --line: rgba(0,0,0,0.08);
+    --line-2: rgba(0,0,0,0.15);
+    --accent: #2d4a6b;
+    --accent-soft: #e8eef5;
+    --danger: #8b2d2d;
+    --danger-soft: #f5e6e6;
+    --warning: #8a5a1a;
+    --warning-soft: #f5ecdc;
+    --success: #2d5a3a;
+    --success-soft: #e6efe9;
+    --info-soft: #e8eef5;
+    --font: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+    --font-serif: "Songti SC", "STSong", Georgia, serif;
+    --font-mono: "SF Mono", Menlo, Consolas, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    font-size: 15px;
+  }
+
+  /* ===== 顶部导航 ===== */
+  .topnav {
+    position: sticky; top: 0;
+    background: rgba(250,250,248,0.95);
+    backdrop-filter: blur(8px);
+    border-bottom: 0.5px solid var(--line);
+    z-index: 100;
+    padding: 12px 32px;
+    display: flex; align-items: center; gap: 24px;
+    font-size: 13px;
+  }
+  .topnav .brand { font-weight: 500; }
+  .topnav .links { display: flex; gap: 20px; margin-left: auto; }
+  .topnav a {
+    color: var(--text-3); text-decoration: none;
+    padding: 4px 8px; border-radius: 4px;
+    transition: all 0.15s;
+  }
+  .topnav a:hover { color: var(--text); background: var(--bg-alt); }
+  .topnav a.active { color: var(--text); background: var(--bg-alt); font-weight: 500; }
+
+  /* ===== 屏容器 ===== */
+  .screen {
+    min-height: 100vh;
+    padding: 64px 48px;
+    display: flex; flex-direction: column;
+    border-bottom: 0.5px solid var(--line);
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+  .screen-header {
+    display: flex; align-items: baseline; gap: 16px;
+    margin-bottom: 24px;
+  }
+  .screen-num {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text-3);
+    letter-spacing: 2px;
+  }
+  .screen-title {
+    font-size: 24px; font-weight: 500;
+    line-height: 1.3;
+    flex: 1;
+  }
+  .screen-title .hl { background: var(--danger-soft); color: var(--danger); padding: 1px 6px; border-radius: 3px; }
+  .screen-lead {
+    font-size: 14px;
+    color: var(--text-2);
+    margin-bottom: 28px;
+    max-width: 720px;
+    line-height: 1.65;
+  }
+
+  /* ===== 封面 ===== */
+  .cover {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 48px;
+    align-items: center;
+    padding: 64px 48px;
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+  .cover-left .label {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text-3);
+    letter-spacing: 2px;
+    margin-bottom: 16px;
+  }
+  .cover-left h1 {
+    font-size: 48px;
+    font-weight: 500;
+    line-height: 1.2;
+    margin-bottom: 24px;
+    letter-spacing: -1px;
+  }
+  .cover-left .lead {
+    font-size: 17px;
+    color: var(--text-2);
+    line-height: 1.65;
+    margin-bottom: 40px;
+    max-width: 540px;
+  }
+  .cover-meta {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px 32px;
+    padding-top: 24px;
+    border-top: 0.5px solid var(--line);
+    font-size: 13px;
+  }
+  .cover-meta dt { color: var(--text-3); font-size: 11px; letter-spacing: 1px; margin-bottom: 2px; }
+  .cover-meta dd { font-weight: 500; }
+  .cover-right {
+    background: var(--bg-alt);
+    border-radius: 8px;
+    aspect-ratio: 4 / 3;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; color: var(--text-3);
+    border: 1px dashed var(--line-2);
+  }
+
+  /* ===== 章节扉页 ===== */
+  .chapter-cover {
+    min-height: 50vh;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 96px 48px;
+    max-width: 1280px;
+    margin: 0 auto;
+    border-bottom: 0.5px solid var(--line);
+  }
+  .chapter-cover .num-big {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    color: var(--text-3);
+    letter-spacing: 4px;
+    margin-bottom: 12px;
+  }
+  .chapter-cover h2 {
+    font-size: 40px;
+    font-weight: 500;
+    margin-bottom: 12px;
+    letter-spacing: -0.5px;
+  }
+  .chapter-cover p {
+    font-size: 15px; color: var(--text-2);
+    max-width: 600px;
+  }
+
+  /* ===== 1.1 项目背景 - 左右分栏 ===== */
+  .bg-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 40px;
+    flex: 1;
+    align-items: start;
+  }
+  .bg-text h3 {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+    margin: 24px 0 8px;
+  }
+  .bg-text h3:first-child { margin-top: 0; }
+  .bg-text p {
+    font-size: 14px; line-height: 1.75;
+    color: var(--text-2);
+    margin-bottom: 12px;
+  }
+  .bg-photos {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 12px;
+    height: 480px;
+  }
+  .bg-photo {
+    background: var(--bg-alt);
+    border: 1px dashed var(--line-2);
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; color: var(--text-3);
+  }
+  .bg-photo.span-2 { grid-column: span 2; }
+
+  /* ===== 1.2 任务卡 ===== */
+  .task-overview {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 32px;
+    flex: 1;
+  }
+  .task-overview-side {
+    display: flex; flex-direction: column; gap: 16px;
+  }
+  .stat-mini {
+    background: var(--bg-card);
+    border: 0.5px solid var(--line);
+    border-radius: 6px;
+    padding: 16px 18px;
+  }
+  .stat-mini .num { font-size: 32px; font-weight: 500; line-height: 1; margin-bottom: 4px; }
+  .stat-mini .label { font-size: 12px; color: var(--text-2); }
+  .task-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    align-content: start;
+  }
+  .task-card {
+    background: var(--bg-card);
+    border: 0.5px solid var(--line);
+    border-radius: 6px;
+    padding: 14px 16px;
+    cursor: pointer;
+    transition: all 0.15s;
+    position: relative;
+  }
+  .task-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(45,74,107,0.08);
+  }
+  .task-card.danger { border-left: 3px solid var(--danger); }
+  .task-card.warning { border-left: 3px solid var(--warning); }
+  .task-card-head {
+    display: flex; align-items: baseline; gap: 8px;
+    margin-bottom: 8px;
+  }
+  .task-card-id { font-family: var(--font-mono); font-size: 11px; color: var(--text-3); }
+  .task-card-title {
+    font-size: 13px; font-weight: 500;
+    flex: 1;
+    line-height: 1.4;
+  }
+  .task-card-stats {
+    display: flex; gap: 12px;
+    font-size: 11px;
+    color: var(--text-3);
+  }
+  .task-card-stats strong {
+    font-weight: 500;
+    color: var(--text);
+    margin-right: 2px;
+  }
+  .task-card-stats .danger { color: var(--danger); }
+  .task-card-stats .danger strong { color: var(--danger); }
+  .task-detail-arrow {
+    position: absolute;
+    right: 14px; top: 14px;
+    font-size: 12px; color: var(--text-3);
+    transition: transform 0.2s;
+  }
+  .task-card:hover .task-detail-arrow { transform: translateX(2px); color: var(--accent); }
+
+  /* ===== 1.3 用户画像 ===== */
+  .persona-grid {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 32px;
+    flex: 1;
+  }
+  .persona-numbers {
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  .persona-num-card {
+    background: var(--bg-card);
+    border: 0.5px solid var(--line);
+    border-radius: 6px;
+    padding: 18px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .persona-num-card:hover {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+  }
+  .persona-num-card .label { font-size: 12px; color: var(--text-2); margin-bottom: 6px; }
+  .persona-num-card .num { font-size: 36px; font-weight: 500; line-height: 1; }
+  .persona-num-card .hint { font-size: 11px; color: var(--text-3); margin-top: 4px; }
+
+  .persona-charts {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    align-content: start;
+  }
+  .chart-card {
+    background: var(--bg-card);
+    border: 0.5px solid var(--line);
+    border-radius: 6px;
+    padding: 16px 18px;
+  }
+  .chart-card .chart-title {
+    font-size: 12px;
+    color: var(--text-2);
+    margin-bottom: 12px;
+    letter-spacing: 0.3px;
+  }
+  .h-bar {
+    display: grid;
+    grid-template-columns: 80px 1fr 32px;
+    align-items: center;
+    gap: 10px;
+    font-size: 12px;
+    margin-bottom: 6px;
+  }
+  .h-bar .name { color: var(--text-2); }
+  .h-bar .track { height: 8px; background: var(--bg-alt); border-radius: 2px; overflow: hidden; }
+  .h-bar .fill { height: 100%; background: var(--accent); border-radius: 2px; }
+  .h-bar .value { text-align: right; font-weight: 500; }
+
+  /* 饼图占位 */
+  .donut-wrap { display: flex; gap: 16px; align-items: center; }
+  .donut {
+    width: 110px; height: 110px;
+    border-radius: 50%;
+    background: conic-gradient(
+      var(--accent) 0% 33%,
+      #5a7a99 33% 58%,
+      #8ba6c2 58% 83%,
+      var(--bg-alt) 83% 100%
+    );
+    position: relative;
+    flex-shrink: 0;
+  }
+  .donut::after {
+    content: '';
+    position: absolute;
+    inset: 22px;
+    background: var(--bg-card);
+    border-radius: 50%;
+  }
+  .donut-legend { display: flex; flex-direction: column; gap: 6px; font-size: 12px; flex: 1; }
+  .donut-legend .item { display: flex; align-items: center; gap: 8px; }
+  .donut-legend .dot { width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0; }
+  .donut-legend .name { color: var(--text-2); flex: 1; }
+  .donut-legend .pct { font-weight: 500; }
+
+  /* ===== 2.1 结果总览 ===== */
+  .overview-layout {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    gap: 24px;
+    flex: 1;
+  }
+  .conclusion-banner {
+    background: var(--accent);
+    color: white;
+    padding: 24px 32px;
+    border-radius: 8px;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 32px;
+    align-items: center;
+  }
+  .conclusion-banner .label-cb {
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 8px;
+  }
+  .conclusion-banner .text-cb {
+    font-size: 16px; font-weight: 500;
+    line-height: 1.5;
+  }
+  .conclusion-banner .text-cb .em { background: rgba(255,255,255,0.2); padding: 1px 6px; border-radius: 3px; }
+  .conclusion-banner .vline {
+    width: 1px; height: 80px;
+    background: rgba(255,255,255,0.2);
+  }
+  .conclusion-banner .stats-cb {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+  .stat-cb .num-cb { font-size: 28px; font-weight: 500; line-height: 1; margin-bottom: 4px; }
+  .stat-cb .label-cb-2 { font-size: 11px; color: rgba(255,255,255,0.75); }
+
+  .overview-bottom {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 24px;
+  }
+  .radar-card {
+    background: var(--bg-card);
+    border: 0.5px solid var(--line);
+    border-radius: 8px;
+    padding: 20px 24px;
+    display: flex; flex-direction: column;
+  }
+  .radar-card .title-rc {
+    font-size: 14px; font-weight: 500;
+    margin-bottom: 4px;
+  }
+  .radar-card .sub-rc {
+    font-size: 11px; color: var(--text-3);
+    font-family: var(--font-mono);
+    margin-bottom: 12px;
+  }
+  .radar-svg-wrap {
+    flex: 1;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .accept-card {
+    display: grid; grid-template-rows: 1fr 1fr;
+    gap: 12px;
+  }
+  .accept-block {
+    background: var(--bg-card);
+    border: 0.5px solid var(--line);
+    border-radius: 8px;
+    padding: 18px 22px;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .accept-block .label-ab { font-size: 12px; color: var(--text-2); margin-bottom: 6px; }
+  .accept-block .num-ab {
+    font-size: 40px; font-weight: 500; line-height: 1;
+    display: flex; align-items: baseline; gap: 6px;
+  }
+  .accept-block .num-ab .pct { font-size: 16px; color: var(--text-3); font-weight: 400; }
+  .accept-block .hint-ab { font-size: 11px; color: var(--text-3); margin-top: 6px; font-family: var(--font-mono); }
+  .accept-block.accepted { background: var(--success-soft); border-color: var(--success); }
+  .accept-block.accepted .num-ab { color: var(--success); }
+
+  /* ===== 单问题深挖 - 网格紧凑 ===== */
+  .problem-screen {
+    display: grid;
+    grid-template-rows: auto auto 1fr auto;
+    gap: 20px;
+    flex: 1;
+  }
+  .problem-meta-row {
+    display: flex; gap: 20px;
+    padding: 12px 16px;
+    background: var(--bg-card);
+    border: 0.5px solid var(--line);
+    border-radius: 6px;
+    font-size: 12px;
+    color: var(--text-2);
+    flex-wrap: wrap;
+  }
+  .problem-meta-row strong { font-weight: 500; color: var(--text); }
+  .problem-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .problem-block-grid {
+    background: var(--bg-card);
+    border: 0.5px solid var(--line);
+    border-radius: 6px;
+    padding: 18px 22px;
+  }
+  .problem-block-grid .label-pb {
+    font-size: 11px;
+    color: var(--text-3);
+    letter-spacing: 1.5px;
+    margin-bottom: 10px;
+    font-family: var(--font-mono);
+  }
+  .problem-block-grid p { font-size: 13px; line-height: 1.7; color: var(--text-2); }
+  .quote-list-compact { display: flex; flex-direction: column; gap: 10px; }
+  .quote-item {
+    padding: 10px 12px;
+    background: var(--bg-alt);
+    border-radius: 4px;
+    border-left: 2px solid var(--line-2);
+  }
+  .quote-item .quote-text-c {
+    font-family: var(--font-serif);
+    font-size: 13px; line-height: 1.6;
+    margin-bottom: 4px;
+  }
+  .quote-item .quote-meta-c {
+    font-size: 11px; color: var(--text-3);
+    font-family: var(--font-mono);
+  }
+  .suggest-list { display: flex; flex-direction: column; gap: 8px; }
+  .suggest-row-c {
+    display: grid;
+    grid-template-columns: 32px 60px 1fr;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 0.5px solid var(--line);
+    font-size: 13px;
+    align-items: start;
+  }
+  .suggest-row-c:last-child { border-bottom: none; }
+  .suggest-row-c .pri { font-family: var(--font-mono); font-size: 11px; font-weight: 500; padding-top: 1px; }
+  .suggest-row-c .pri.p0 { color: var(--danger); }
+  .suggest-row-c .pri.p1 { color: var(--warning); }
+  .suggest-row-c .pri.p2 { color: var(--text-2); }
+  .suggest-row-c .stage { font-size: 11px; color: var(--text-3); padding-top: 2px; }
+  .suggest-row-c .text-s { color: var(--text-2); line-height: 1.55; }
+  .accept-row {
+    background: var(--accent-soft);
+    padding: 12px 18px;
+    border-radius: 4px;
+    border-left: 3px solid var(--accent);
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 16px;
+    align-items: center;
+    font-size: 13px;
+  }
+  .accept-row .label-ar { font-size: 11px; color: var(--accent); letter-spacing: 1.5px; font-weight: 500; }
+  .accept-row .text-ar { color: var(--text); line-height: 1.55; }
+
+  /* 问题切换器 */
+  .problem-tabs {
+    display: flex; gap: 4px; margin-bottom: 16px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+  .problem-tab {
+    padding: 6px 14px;
+    border: 0.5px solid var(--line-2);
+    border-radius: 14px;
+    font-size: 12px;
+    color: var(--text-2);
+    cursor: pointer;
+    background: transparent;
+    font-family: var(--font);
+    white-space: nowrap;
+    transition: all 0.15s;
+  }
+  .problem-tab:hover { border-color: var(--text-2); color: var(--text); }
+  .problem-tab.active {
+    background: var(--text);
+    color: var(--bg);
+    border-color: var(--text);
+  }
+  .problem-tab.danger.active { background: var(--danger); border-color: var(--danger); }
+
+  /* ===== 通用 pill ===== */
+  .pill {
+    display: inline-block;
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 8px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+  }
+  .pill-danger { background: var(--danger-soft); color: var(--danger); }
+  .pill-warning { background: var(--warning-soft); color: var(--warning); }
+  .pill-info { background: var(--info-soft); color: var(--accent); }
+  .pill-neutral { background: var(--bg-alt); color: var(--text-2); }
+
+  /* ===== 附录表格 ===== */
+  .filter-bar {
+    display: flex; gap: 8px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .filter-bar .label-f { font-size: 12px; color: var(--text-3); margin-right: 4px; }
+  .filter-btn {
+    background: transparent;
+    border: 0.5px solid var(--line-2);
+    padding: 6px 12px;
+    border-radius: 14px;
+    font-size: 12px;
+    color: var(--text-2);
+    cursor: pointer;
+    font-family: var(--font);
+    transition: all 0.15s;
+  }
+  .filter-btn:hover { border-color: var(--text-2); color: var(--text); }
+  .filter-btn.active {
+    background: var(--text); color: var(--bg); border-color: var(--text);
+  }
+  table.appendix {
+    width: 100%; border-collapse: collapse;
+    font-size: 13px;
+    background: var(--bg-card);
+    border: 0.5px solid var(--line);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  table.appendix th {
+    text-align: left; padding: 10px 12px;
+    font-weight: 500; color: var(--text-3);
+    font-size: 11px; letter-spacing: 1px;
+    background: var(--bg-alt);
+    border-bottom: 0.5px solid var(--line-2);
+  }
+  table.appendix td {
+    padding: 12px;
+    border-bottom: 0.5px solid var(--line);
+    vertical-align: middle;
+  }
+  table.appendix tr:last-child td { border-bottom: none; }
+  table.appendix tr.hidden { display: none; }
+  table.appendix tr:hover td { background: var(--bg-alt); }
+  table.appendix .id-cell {
+    font-family: var(--font-mono);
+    color: var(--text-3); font-size: 11px;
+  }
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <span class="brand">XXX 项目 · UX 评估报告</span>
+  <div class="links">
+    <a href="#cover">封面</a>
+    <a href="#background">研究设计</a>
+    <a href="#overview">结果总览</a>
+    <a href="#problems">问题深挖</a>
+    <a href="#appendix">附录</a>
+  </div>
+</nav>
+
+<!-- ===== 封面:左右分栏 ===== -->
+<section id="cover" class="cover">
+  <div class="cover-left">
+    <div class="label">UX 用户评估报告 · V1.0</div>
+    <h1>XXX 项目<br/>用户体验评估报告</h1>
+    <p class="lead">基于 12 名目标用户的可用性测试,识别核心体验问题与高价值机会点,为下一迭代提供决策依据。</p>
+    <dl class="cover-meta">
+      <div><dt>产品</dt><dd>XXX 项目</dd></div>
+      <div><dt>责任人</dt><dd>张三 · 工号 12345</dd></div>
+      <div><dt>部门</dt><dd>用户体验设计部</dd></div>
+      <div><dt>更新时间</dt><dd>2026/05/07</dd></div>
+    </dl>
+  </div>
+  <div class="cover-right">
+    <span>封面图占位 · 由用户上传</span>
+  </div>
+</section>
+
+<!-- ===== 章节 01 扉页 ===== -->
+<section id="background" class="chapter-cover">
+  <div class="num-big">01 / 研究设计</div>
+  <h2>为什么测、测什么、怎么测</h2>
+  <p>本章包含项目背景、评测场景与任务、招募样本与样本充分性。</p>
+</section>
+
+<!-- ===== 1.1 项目背景:左右分栏 + 照片占位 ===== -->
+<section class="screen">
+  <div class="screen-header">
+    <span class="screen-num">1.1</span>
+    <h2 class="screen-title">围绕 XXX 模块,发现易用性问题、收集改进期待</h2>
+  </div>
+  <p class="screen-lead">本次评估聚焦核心使用流程,从交互、内容、呈现三个层面识别体验问题。采用有主持人的可用性测试结合半结构化访谈。</p>
+  <div class="bg-grid">
+    <div class="bg-text">
+      <h3>研究目的</h3>
+      <p>发现 XXX 模块在真实使用场景下的可用性问题,收集用户对当前体验的评价和改进期待,为下一版本设计迭代提供量化数据与用户洞察支撑。</p>
+      <h3>研究方法</h3>
+      <p>有主持人的可用性测试 + 半结构化访谈。每位被试在标准任务场景下自助操作,主持人观察行为、引导 think-aloud、做任务后追问。每个任务后填写单任务满意度问卷,完成所有任务后填写整体满意度问卷。</p>
+      <h3>采样信息</h3>
+      <p>2026 年 4 月 / 北京 + 远程视频 / 共 12 名目标用户。</p>
+    </div>
+    <div class="bg-photos">
+      <div class="bg-photo span-2">现场照片占位 · 主图</div>
+      <div class="bg-photo">现场照片 2</div>
+      <div class="bg-photo">现场照片 3</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 1.2 评测任务:卡片网格 + 交互 ===== -->
+<section class="screen">
+  <div class="screen-header">
+    <span class="screen-num">1.2</span>
+    <h2 class="screen-title">本次评测覆盖 6 项关键任务</h2>
+  </div>
+  <p class="screen-lead">基于用户高频场景、舆情高频痛点、设计关注点三类来源抽取。点击任意任务卡查看详情。</p>
+  <div class="task-overview">
+    <div class="task-overview-side">
+      <div class="stat-mini">
+        <div class="num">6</div>
+        <div class="label">关键任务</div>
+      </div>
+      <div class="stat-mini">
+        <div class="num">3</div>
+        <div class="label">来源依据</div>
+      </div>
+      <div class="stat-mini">
+        <div class="num">24</div>
+        <div class="label">观察记录</div>
+      </div>
+      <div class="stat-mini" style="background: var(--accent-soft); border-color: var(--accent);">
+        <div class="num" style="color: var(--accent);">2</div>
+        <div class="label">本期高风险任务</div>
+      </div>
+    </div>
+    <div class="task-grid">
+      <div class="task-card danger" onclick="alert('跳转到 P-001 问题详情')">
+        <span class="task-detail-arrow">→</span>
+        <div class="task-card-head">
+          <span class="task-card-id">T03</span>
+          <span class="task-card-title">从历史会话中找到上次提到的某个文档</span>
+        </div>
+        <div class="task-card-stats">
+          <span class="danger">完成率 <strong>38%</strong></span>
+          <span>出错 <strong>2.3</strong></span>
+          <span>满意度 <strong>4.2</strong></span>
+        </div>
+      </div>
+      <div class="task-card danger" onclick="alert('跳转到 P-002 问题详情')">
+        <span class="task-detail-arrow">→</span>
+        <div class="task-card-head">
+          <span class="task-card-id">T05</span>
+          <span class="task-card-title">配置一个跨模块的自动化规则</span>
+        </div>
+        <div class="task-card-stats">
+          <span class="danger">完成率 <strong>50%</strong></span>
+          <span>出错 <strong>1.8</strong></span>
+          <span>满意度 <strong>5.1</strong></span>
+        </div>
+      </div>
+      <div class="task-card warning" onclick="alert('跳转到 P-004 问题详情')">
+        <span class="task-detail-arrow">→</span>
+        <div class="task-card-head">
+          <span class="task-card-id">T01</span>
+          <span class="task-card-title">首次进入产品时完成基本配置</span>
+        </div>
+        <div class="task-card-stats">
+          <span>完成率 <strong>75%</strong></span>
+          <span>出错 <strong>1.2</strong></span>
+          <span>满意度 <strong>6.0</strong></span>
+        </div>
+      </div>
+      <div class="task-card">
+        <span class="task-detail-arrow">→</span>
+        <div class="task-card-head">
+          <span class="task-card-id">T02</span>
+          <span class="task-card-title">查找并应用一个内置模板</span>
+        </div>
+        <div class="task-card-stats">
+          <span>完成率 <strong>92%</strong></span>
+          <span>出错 <strong>0.4</strong></span>
+          <span>满意度 <strong>8.1</strong></span>
+        </div>
+      </div>
+      <div class="task-card">
+        <span class="task-detail-arrow">→</span>
+        <div class="task-card-head">
+          <span class="task-card-id">T04</span>
+          <span class="task-card-title">查看个人使用统计数据</span>
+        </div>
+        <div class="task-card-stats">
+          <span>完成率 <strong>83%</strong></span>
+          <span>出错 <strong>0.8</strong></span>
+          <span>满意度 <strong>7.0</strong></span>
+        </div>
+      </div>
+      <div class="task-card">
+        <span class="task-detail-arrow">→</span>
+        <div class="task-card-head">
+          <span class="task-card-id">T06</span>
+          <span class="task-card-title">将工作内容分享给团队成员</span>
+        </div>
+        <div class="task-card-stats">
+          <span>完成率 <strong>88%</strong></span>
+          <span>出错 <strong>0.6</strong></span>
+          <span>满意度 <strong>7.6</strong></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 1.3 用户画像 dashboard ===== -->
+<section class="screen">
+  <div class="screen-header">
+    <span class="screen-num">1.3</span>
+    <h2 class="screen-title">12 名被试,覆盖关键岗位与经验层级</h2>
+  </div>
+  <p class="screen-lead">根据 12 名被试在岗位、经验、业务场景、使用频率多维度的分布,确保关键角色全面覆盖。点击数字卡查看明细。</p>
+  <div class="persona-grid">
+    <div class="persona-numbers">
+      <div class="persona-num-card" onclick="alert('展开被试清单')">
+        <div class="label">被试总数</div>
+        <div class="num">12</div>
+        <div class="hint">线上 + 线下</div>
+      </div>
+      <div class="persona-num-card" onclick="alert('展开熟练用户清单')">
+        <div class="label">熟练用户</div>
+        <div class="num">7</div>
+        <div class="hint">使用经验 6 个月以上</div>
+      </div>
+      <div class="persona-num-card" onclick="alert('展开新手用户清单')">
+        <div class="label">新手用户</div>
+        <div class="num">5</div>
+        <div class="hint">使用经验不足 1 个月</div>
+      </div>
+      <div class="persona-num-card" onclick="alert('查看完整公式与计算依据')" style="background: var(--accent-soft); border-color: var(--accent);">
+        <div class="label">问题发现率</div>
+        <div class="num" style="color: var(--accent);">98%</div>
+        <div class="hint">N(1-(1-L)^n) · L=0.31</div>
+      </div>
+    </div>
+    <div class="persona-charts">
+      <div class="chart-card">
+        <div class="chart-title">岗位分布</div>
+        <div class="donut-wrap">
+          <div class="donut"></div>
+          <div class="donut-legend">
+            <div class="item"><span class="dot" style="background:#2d4a6b"></span><span class="name">产品经理</span><span class="pct">33%</span></div>
+            <div class="item"><span class="dot" style="background:#5a7a99"></span><span class="name">设计师</span><span class="pct">25%</span></div>
+            <div class="item"><span class="dot" style="background:#8ba6c2"></span><span class="name">研发</span><span class="pct">25%</span></div>
+            <div class="item"><span class="dot" style="background:#d6dde4"></span><span class="name">运营</span><span class="pct">17%</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">使用经验</div>
+        <div class="h-bar"><span class="name">6 月以上</span><span class="track"><span class="fill" style="width:58%"></span></span><span class="value">7</span></div>
+        <div class="h-bar"><span class="name">1-6 月</span><span class="track"><span class="fill" style="width:25%"></span></span><span class="value">3</span></div>
+        <div class="h-bar"><span class="name">不足 1 月</span><span class="track"><span class="fill" style="width:17%"></span></span><span class="value">2</span></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">业务场景使用频率</div>
+        <div class="h-bar"><span class="name">每日使用</span><span class="track"><span class="fill" style="width:67%"></span></span><span class="value">8</span></div>
+        <div class="h-bar"><span class="name">每周使用</span><span class="track"><span class="fill" style="width:25%"></span></span><span class="value">3</span></div>
+        <div class="h-bar"><span class="name">偶尔使用</span><span class="track"><span class="fill" style="width:8%"></span></span><span class="value">1</span></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">主要使用场景</div>
+        <div class="h-bar"><span class="name">日常协作</span><span class="track"><span class="fill" style="width:75%"></span></span><span class="value">9</span></div>
+        <div class="h-bar"><span class="name">项目管理</span><span class="track"><span class="fill" style="width:50%"></span></span><span class="value">6</span></div>
+        <div class="h-bar"><span class="name">数据分析</span><span class="track"><span class="fill" style="width:33%"></span></span><span class="value">4</span></div>
+        <div class="h-bar"><span class="name">客户沟通</span><span class="track"><span class="fill" style="width:25%"></span></span><span class="value">3</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 章节 02 扉页 ===== -->
+<section id="overview" class="chapter-cover">
+  <div class="num-big">02 / 结果总览</div>
+  <h2>整体测试结果的全局画面</h2>
+  <p>包括问题与需求识别数量、接纳率、维度均分、本期核心结论。</p>
+</section>
+
+<!-- ===== 2.1 结果总览:结论前置 + 三块紧凑布局 ===== -->
+<section class="screen">
+  <div class="screen-header">
+    <span class="screen-num">2.1</span>
+    <h2 class="screen-title">体验整体可用,在<span class="hl">信息架构</span>和<span class="hl">反馈机制</span>上有明显短板</h2>
+  </div>
+  <div class="overview-layout">
+    <!-- 结论横幅 -->
+    <div class="conclusion-banner">
+      <div>
+        <div class="label-cb">本期核心结论</div>
+        <div class="text-cb">用户在"使用产品时不出错"和"出错后能恢复"两条体验路径上明显挂钩——<span class="em">出错恢复 / 信息架构 / 反馈机制</span>三个维度共同指向用户找不到、找错也不知道。建议作为下一迭代攻坚方向。</div>
+      </div>
+      <div class="vline"></div>
+      <div class="stats-cb">
+        <div class="stat-cb"><div class="num-cb">23</div><div class="label-cb-2">问题识别数</div></div>
+        <div class="stat-cb"><div class="num-cb">8</div><div class="label-cb-2">需求识别数</div></div>
+        <div class="stat-cb"><div class="num-cb">5.5</div><div class="label-cb-2">最低维度均分</div></div>
+        <div class="stat-cb"><div class="num-cb">7.5</div><div class="label-cb-2">整体满意度</div></div>
+      </div>
+    </div>
+
+    <!-- 雷达 + 接纳率 -->
+    <div class="overview-bottom">
+      <div class="radar-card">
+        <div class="title-rc">维度均分(11 项)</div>
+        <div class="sub-rc">n=12 · 10 点量表 · 取均值</div>
+        <div class="radar-svg-wrap">
+          <svg viewBox="-150 -150 300 300" width="100%" height="280">
+            <!-- 背景圆环 -->
+            <g fill="none" stroke="rgba(0,0,0,0.08)" stroke-width="0.5">
+              <polygon points="0,-120 113.91,-37.06 70.41,97.06 -70.41,97.06 -113.91,-37.06" transform="rotate(0)" id="bg5"/>
+            </g>
+            <!-- 同心多边形 (9 边) -->
+            <g fill="none" stroke="rgba(0,0,0,0.06)" stroke-width="0.5">
+              <polygon id="ring1" points=""/>
+              <polygon id="ring2" points=""/>
+              <polygon id="ring3" points=""/>
+              <polygon id="ring4" points=""/>
+            </g>
+            <!-- 数据多边形 -->
+            <polygon id="data-poly" points="" fill="rgba(45,74,107,0.18)" stroke="#2d4a6b" stroke-width="1.5"/>
+            <!-- 短板点高亮 -->
+            <g id="data-points"></g>
+            <!-- 标签 -->
+            <g id="labels" font-size="10" fill="#5a5a55"></g>
+          </svg>
+        </div>
+        <div style="font-size: 11px; color: var(--text-3); margin-top: 8px; padding-top: 10px; border-top: 0.5px solid var(--line);">
+          <span style="color: var(--danger);">●</span> 短板维度 ≤ 6.5
+        </div>
+      </div>
+
+      <div class="accept-card">
+        <div class="accept-block accepted">
+          <div class="label-ab">问题接纳率</div>
+          <div class="num-ab">78<span class="pct">%</span></div>
+          <div class="hint-ab">已接纳 18 / 23</div>
+        </div>
+        <div class="accept-block">
+          <div class="label-ab">需求接纳率</div>
+          <div class="num-ab">62<span class="pct">%</span></div>
+          <div class="hint-ab">已接纳 5 / 8</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 章节 03 扉页 ===== -->
+<section id="problems" class="chapter-cover">
+  <div class="num-big">03 / 问题深挖</div>
+  <h2>仅展开危急与严重问题</h2>
+  <p>每个问题独立成屏,讲透"是什么、为什么、怎么办"。其他等级问题见附录台账。</p>
+</section>
+
+<!-- ===== 单问题深挖:网格紧凑布局 ===== -->
+<section class="screen">
+  <div class="problem-tabs">
+    <span style="font-size:12px; color:var(--text-3); margin-right:4px; padding-top:6px;">问题切换</span>
+    <button class="problem-tab danger active">P-001</button>
+    <button class="problem-tab danger">P-002</button>
+    <button class="problem-tab danger">P-003</button>
+    <button class="problem-tab">P-004</button>
+    <button class="problem-tab">P-005</button>
+    <button class="problem-tab">P-006</button>
+  </div>
+
+  <div class="screen-header">
+    <span class="screen-num">P-001</span>
+    <h2 class="screen-title">历史会话搜索结果与用户预期不一致,用户无法找到上次提到的内容</h2>
+    <span class="pill pill-danger">危急</span>
+  </div>
+
+  <div class="problem-screen">
+    <div class="problem-meta-row">
+      <span>任务 <strong>T03</strong></span>
+      <span>影响 <strong>6/12 被试</strong></span>
+      <span>归属 <strong>信息架构</strong></span>
+      <span>主责 <strong>产品 + 后端</strong></span>
+      <span>状态 <strong style="color:var(--success);">已接纳</strong></span>
+    </div>
+
+    <div class="problem-body">
+      <div class="problem-block-grid">
+        <div class="label-pb">问题现象</div>
+        <p>被试搜索历史会话时,结果按时间倒序展示,但被试预期是按"相关性"。12 人中 6 人在搜索后 30 秒内表现明显困惑,3 人直接放弃,2 人滚动多屏后找到目标,1 人未完成。</p>
+        <div class="label-pb" style="margin-top:16px;">根因分析</div>
+        <p>排序策略与用户心智模型不匹配。用户在搜索行为中默认"搜索 = 找最相关的内容"。当前按时间倒序的策略源于"会话信息流"的延续设计,但在搜索场景下与预期产生根本性冲突。</p>
+      </div>
+      <div class="problem-block-grid">
+        <div class="label-pb">用户原声</div>
+        <div class="quote-list-compact">
+          <div class="quote-item">
+            <div class="quote-text-c">"我以为最相关的会在最上面,结果完全不是,得自己翻很久。"</div>
+            <div class="quote-meta-c">P02 · 12:34</div>
+          </div>
+          <div class="quote-item">
+            <div class="quote-text-c">"我搜了三遍,以为是关键词没对,后来才发现是排序的问题。"</div>
+            <div class="quote-meta-c">P05 · 08:15</div>
+          </div>
+          <div class="quote-item">
+            <div class="quote-text-c">"算了,我直接重新问一遍,找不动。"</div>
+            <div class="quote-meta-c">P07 · 21:08</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="problem-block-grid">
+      <div class="label-pb">优化建议</div>
+      <div class="suggest-list">
+        <div class="suggest-row-c">
+          <span class="pri p0">P0</span>
+          <span class="stage">短期</span>
+          <span class="text-s">默认相关性排序,提供时间排序切换。将搜索结果默认排序改为相关性,保留时间排序作为可选项。</span>
+        </div>
+        <div class="suggest-row-c">
+          <span class="pri p1">P1</span>
+          <span class="stage">中期</span>
+          <span class="text-s">搜索结果分组展示。按"最相关""最近""带文档"等维度分组,降低单一排序的认知负担。</span>
+        </div>
+        <div class="suggest-row-c">
+          <span class="pri p2">P2</span>
+          <span class="stage">长期</span>
+          <span class="text-s">语义搜索能力建设。基于向量检索,从"匹配关键词"升级到"理解意图"。</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="accept-row">
+      <div class="label-ar">验收标准</div>
+      <div class="text-ar">优化上线后,T03 任务完成率提升至 80% 以上,首屏命中率(用户在前 5 条结果内找到目标)≥ 70%。</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 章节 04 扉页 + 附录 ===== -->
+<section id="appendix" class="chapter-cover">
+  <div class="num-big">04 / 附录</div>
+  <h2>问题与需求台账</h2>
+  <p>完整可追溯的问题清单,可按严重等级筛选。</p>
+</section>
+
+<section class="screen">
+  <div class="screen-header">
+    <span class="screen-num">4.1</span>
+    <h2 class="screen-title">问题清单总表</h2>
+  </div>
+  <p class="screen-lead">共 23 项,可按严重等级筛选查看。</p>
+  <div class="filter-bar">
+    <span class="label-f">筛选</span>
+    <button class="filter-btn active" onclick="filterTable('all', this)">全部 23</button>
+    <button class="filter-btn" onclick="filterTable('danger', this)">危急 3</button>
+    <button class="filter-btn" onclick="filterTable('warning', this)">严重 7</button>
+    <button class="filter-btn" onclick="filterTable('info', this)">中等 9</button>
+    <button class="filter-btn" onclick="filterTable('neutral', this)">轻微 4</button>
+  </div>
+  <table class="appendix" id="problem-table">
+    <thead>
+      <tr>
+        <th style="width:60px">ID</th>
+        <th style="width:60px">等级</th>
+        <th>问题描述</th>
+        <th style="width:90px">归属</th>
+        <th style="width:60px">影响</th>
+        <th style="width:60px">优先级</th>
+        <th style="width:80px">状态</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr data-severity="danger">
+        <td class="id-cell">P-001</td>
+        <td><span class="pill pill-danger">危急</span></td>
+        <td>历史会话搜索结果与用户预期不一致</td>
+        <td style="color:var(--text-2); font-size:12px;">信息架构</td>
+        <td style="color:var(--text-2); font-size:12px;">6/12</td>
+        <td style="color:var(--danger); font-weight:500; font-size:12px;">P0</td>
+        <td style="color:var(--success); font-size:12px;">已接纳</td>
+      </tr>
+      <tr data-severity="danger">
+        <td class="id-cell">P-002</td>
+        <td><span class="pill pill-danger">危急</span></td>
+        <td>自动化规则配置流程缺少验证反馈</td>
+        <td style="color:var(--text-2); font-size:12px;">反馈机制</td>
+        <td style="color:var(--text-2); font-size:12px;">5/12</td>
+        <td style="color:var(--danger); font-weight:500; font-size:12px;">P0</td>
+        <td style="color:var(--success); font-size:12px;">已接纳</td>
+      </tr>
+      <tr data-severity="danger">
+        <td class="id-cell">P-003</td>
+        <td><span class="pill pill-danger">危急</span></td>
+        <td>出错时无法回退到上一步</td>
+        <td style="color:var(--text-2); font-size:12px;">出错恢复</td>
+        <td style="color:var(--text-2); font-size:12px;">7/12</td>
+        <td style="color:var(--danger); font-weight:500; font-size:12px;">P0</td>
+        <td style="color:var(--success); font-size:12px;">已接纳</td>
+      </tr>
+      <tr data-severity="warning">
+        <td class="id-cell">P-004</td>
+        <td><span class="pill pill-warning">严重</span></td>
+        <td>首次进入产品时引导信息缺失关键步骤</td>
+        <td style="color:var(--text-2); font-size:12px;">易学性</td>
+        <td style="color:var(--text-2); font-size:12px;">5/12</td>
+        <td style="color:var(--warning); font-weight:500; font-size:12px;">P1</td>
+        <td style="color:var(--success); font-size:12px;">已接纳</td>
+      </tr>
+      <tr data-severity="warning">
+        <td class="id-cell">P-005</td>
+        <td><span class="pill pill-warning">严重</span></td>
+        <td>侧栏信息架构层级过深</td>
+        <td style="color:var(--text-2); font-size:12px;">信息架构</td>
+        <td style="color:var(--text-2); font-size:12px;">6/12</td>
+        <td style="color:var(--warning); font-weight:500; font-size:12px;">P1</td>
+        <td style="color:var(--text-3); font-size:12px;">评估中</td>
+      </tr>
+      <tr data-severity="warning">
+        <td class="id-cell">P-006</td>
+        <td><span class="pill pill-warning">严重</span></td>
+        <td>统计图表时间维度切换不直观</td>
+        <td style="color:var(--text-2); font-size:12px;">交互</td>
+        <td style="color:var(--text-2); font-size:12px;">4/12</td>
+        <td style="color:var(--warning); font-weight:500; font-size:12px;">P1</td>
+        <td style="color:var(--success); font-size:12px;">已接纳</td>
+      </tr>
+      <tr data-severity="info">
+        <td class="id-cell">P-007</td>
+        <td><span class="pill pill-info">中等</span></td>
+        <td>部分按钮的图标语义不清晰</td>
+        <td style="color:var(--text-2); font-size:12px;">视觉</td>
+        <td style="color:var(--text-2); font-size:12px;">3/12</td>
+        <td style="color:var(--text-2); font-weight:500; font-size:12px;">P2</td>
+        <td style="color:var(--success); font-size:12px;">已接纳</td>
+      </tr>
+      <tr data-severity="info">
+        <td class="id-cell">P-008</td>
+        <td><span class="pill pill-info">中等</span></td>
+        <td>导出功能位置较隐蔽</td>
+        <td style="color:var(--text-2); font-size:12px;">信息架构</td>
+        <td style="color:var(--text-2); font-size:12px;">3/12</td>
+        <td style="color:var(--text-2); font-weight:500; font-size:12px;">P2</td>
+        <td style="color:var(--text-3); font-size:12px;">评估中</td>
+      </tr>
+      <tr data-severity="neutral">
+        <td class="id-cell">P-009</td>
+        <td><span class="pill pill-neutral">轻微</span></td>
+        <td>提示文案略冗长</td>
+        <td style="color:var(--text-2); font-size:12px;">文案</td>
+        <td style="color:var(--text-2); font-size:12px;">2/12</td>
+        <td style="color:var(--text-2); font-weight:500; font-size:12px;">P3</td>
+        <td style="color:var(--text-3); font-size:12px;">未接纳</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<script>
+// ====== 雷达图渲染 ======
+(function renderRadar() {
+  const dims = [
+    {name:'易学性', value:8.3},
+    {name:'效率', value:7.5},
+    {name:'易记性', value:7.8},
+    {name:'出错恢复', value:5.5},
+    {name:'一致性', value:7.7},
+    {name:'信息架构', value:5.9},
+    {name:'视觉清晰', value:8.4},
+    {name:'反馈机制', value:6.1},
+    {name:'愉悦度', value:7.4},
+  ];
+  const N = dims.length;
+  const R = 110;
+  const cx = 0, cy = 0;
+  const angle = i => (Math.PI * 2 * i) / N - Math.PI / 2;
+
+  // 背景同心环
+  const rings = [0.25, 0.5, 0.75, 1];
+  rings.forEach((ratio, idx) => {
+    const ring = document.getElementById('ring' + (idx + 1));
+    if (!ring) return;
+    let pts = '';
+    for (let i = 0; i < N; i++) {
+      const r = R * ratio;
+      const x = cx + r * Math.cos(angle(i));
+      const y = cy + r * Math.sin(angle(i));
+      pts += x + ',' + y + ' ';
+    }
+    ring.setAttribute('points', pts.trim());
+  });
+
+  // 数据多边形
+  const dataPoly = document.getElementById('data-poly');
+  let dataPts = '';
+  dims.forEach((d, i) => {
+    const r = (d.value / 10) * R;
+    const x = cx + r * Math.cos(angle(i));
+    const y = cy + r * Math.sin(angle(i));
+    dataPts += x + ',' + y + ' ';
+  });
+  dataPoly.setAttribute('points', dataPts.trim());
+
+  // 短板点
+  const pointsG = document.getElementById('data-points');
+  dims.forEach((d, i) => {
+    const r = (d.value / 10) * R;
+    const x = cx + r * Math.cos(angle(i));
+    const y = cy + r * Math.sin(angle(i));
+    const c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    c.setAttribute('cx', x);
+    c.setAttribute('cy', y);
+    c.setAttribute('r', d.value <= 6.5 ? 4 : 2.5);
+    c.setAttribute('fill', d.value <= 6.5 ? '#8b2d2d' : '#2d4a6b');
+    pointsG.appendChild(c);
+  });
+
+  // 标签
+  const labelsG = document.getElementById('labels');
+  dims.forEach((d, i) => {
+    const labelR = R + 18;
+    const x = cx + labelR * Math.cos(angle(i));
+    const y = cy + labelR * Math.sin(angle(i));
+    const t = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    t.setAttribute('x', x);
+    t.setAttribute('y', y);
+    t.setAttribute('text-anchor', x < -10 ? 'end' : (x > 10 ? 'start' : 'middle'));
+    t.setAttribute('dominant-baseline', y < -10 ? 'auto' : (y > 10 ? 'hanging' : 'middle'));
+    t.setAttribute('font-size', '10');
+    t.setAttribute('fill', d.value <= 6.5 ? '#8b2d2d' : '#5a5a55');
+    t.setAttribute('font-weight', d.value <= 6.5 ? '500' : '400');
+    t.textContent = d.name + ' ' + d.value;
+    labelsG.appendChild(t);
+  });
+})();
+
+// ====== 表格筛选 ======
+function filterTable(severity, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('#problem-table tbody tr').forEach(row => {
+    if (severity === 'all' || row.dataset.severity === severity) row.classList.remove('hidden');
+    else row.classList.add('hidden');
+  });
+}
+
+// ====== 顶部导航高亮 ======
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.topnav a');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(section => {
+    const top = section.offsetTop - 100;
+    if (window.scrollY >= top) current = section.getAttribute('id');
+  });
+  navLinks.forEach(link => {
+    link.classList.remove('active');
+    if (link.getAttribute('href') === '#' + current) link.classList.add('active');
+  });
+});
+
+// ====== 问题切换 tab(示意) ======
+document.querySelectorAll('.problem-tab').forEach(tab => {
+  tab.addEventListener('click', function() {
+    document.querySelectorAll('.problem-tab').forEach(t => t.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+</script>
+
+</body>
+</html>

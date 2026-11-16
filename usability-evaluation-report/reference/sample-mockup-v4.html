@@ -1,3 +1,4 @@
+<!-- 视觉示例，非数据基准。正式输出必须遵循 data-calculation.md 和 visualization-patterns.md：动态计算图形、U 编号脱敏、均值两位小数、个人均分仅附录。 -->
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -581,7 +582,7 @@ body {
   background: currentColor;
 }
 
-/* 问题类型 chip - 5 类固定枚举 */
+/* 问题类型 chip - 7 类已知枚举 */
 .type-chip {
   display: inline-flex;
   align-items: center;
@@ -1323,9 +1324,9 @@ body {
       </div>
     </div>
 
-    <!-- 问题类型分布 - 5 类固定枚举 -->
+    <!-- 问题类型分布 - 7 类已知枚举 -->
     <div class="card span-12">
-      <div class="card-label">问题类型分布<span class="n-tag">5 类固定枚举 · 上游 schema</span></div>
+      <div class="card-label">问题类型分布<span class="n-tag">7 类已知枚举 · 上游 schema</span></div>
       <div class="bars">
         <div class="bar-item">
           <span class="bar-name">信息设计类</span>
@@ -1391,9 +1392,9 @@ body {
 <!-- ============================================
      ISSUE DETAIL · 问题深挖一例
      使用真实 schema 字段: 全局 ID P-001 + 本地溯源 T1-OP1
-     被试 ID: P01/P02 (从用户1/用户2 标准化)
+     被试 ID: U01/U02 (从用户1/用户2 标准化)
      严重程度字面值: 致命/严重/一般/提示
-     问题类型: 信息设计类 (5 类固定枚举之一)
+     问题类型: 信息设计类 (7 类已知枚举之一)
      ============================================ -->
 <section class="issue-detail" id="issues">
   <div class="section-head">
@@ -1460,15 +1461,15 @@ body {
         <!-- 注意: 上游 JSON 没有时间戳,attr 只放被试 ID + 姓名 + 来源 -->
         <div class="voice-item">
           <div class="v-text">"你们下边这个科研工作者、教育工作者、学生、开放者,其实还比较直观,我一眼就知道我点哪儿。"</div>
-          <div class="v-attr">P01 · 艾先生 · 逐字稿</div>
+          <div class="v-attr">U01 · 逐字稿</div>
         </div>
         <div class="voice-item">
           <div class="v-text">"就是你这样指向性地说的话,我作为访问学者,一进来就知道哪一块是给我看的。现在这种按学院分的,我得猜。"</div>
-          <div class="v-attr">P02 · 陈先生 · 逐字稿</div>
+          <div class="v-attr">U02 · 逐字稿</div>
         </div>
         <div class="voice-item">
           <div class="v-text">"我点了三次才找到对的入口,前两次都点错了——那种'科研处'、'人事处'的分法,我根本不知道我的事情归谁管。"</div>
-          <div class="v-attr">P07 · 林女士 · 逐字稿</div>
+          <div class="v-attr">U07 · 林女士 · 逐字稿</div>
         </div>
       </div>
     </div>
@@ -1683,7 +1684,7 @@ body {
     <ul>
       <li>问题分级: 上游聚类 skill 字面值</li>
       <li>致命 / 严重 / 一般 / 提示</li>
-      <li>问题类型: 上游 5 类固定枚举</li>
+      <li>问题类型: 上游 7 类已知枚举</li>
       <li>被试 ID: 用户N → PNN 标准化</li>
     </ul>
   </div>

@@ -2,6 +2,38 @@
 
 报告中常用的可视化图表实现。优先使用纯 SVG 或 CSS 实现,避免引入第三方库(单文件 HTML 原则)。
 
+## 交付必查：图表与数字共用数据
+
+标签、柱长、排序、雷达坐标、饼图扇区和悬停值必须读取同一指标数据对象，不能手填另一套百分比/坐标。以下历史 HTML 片段仅示意结构，示例数字不作为项目数据；所有硬编码宽度和扇区须改为数据驱动。
+
+- 满意度柱状图零基线，共用实际量表上限；宽度 = value / scaleMax × 100%。同图所有 track 等宽，不能每根柱用不同分母；相同原值等长，较大原值更长。不设会扭曲比例的最短柱宽。
+- 计数图零基线、统一上界；饼图用原始计数/有效总数计算累计边界，不用已经取整的显示百分比。总数为 0、缺失值不画成真实零值。
+- 雷达各轴同量表上限；混合量表未经明确转换不得放同一雷达。NPS 为 -100 至 100，若画条形图使用包含负值的带标记零轴，不能套正值进度条。
+- 均值标签/悬停两位小数，几何计算用未舍入值；两位后显示相同但原值不同，应在计算说明或悬停补充精度，不能手工改柱长。
+- 用浏览器在动画结束后核对实际柱宽/高度、轴与标签，不能只看源数据。已知数据 8、8、4 在同尺度下长度应为 2:2:1。检查排序后标签仍对应原记录，导航/筛选后仍一致。
+- 未通过图数核对前不交付；无法启动浏览器时明确说明未完成视觉验证，不能声称已验收。
+
+可复用的满意度条形图绑定（data 包含 value、display、n）：
+
+```javascript
+function bindScoreBar(row, data, scaleMax) {
+  if (!Number.isFinite(scaleMax) || scaleMax <= 0) throw Error('Invalid scale');
+  const fill = row.querySelector('.fill');
+  const label = row.querySelector('.value');
+  fill.style.display = 'block';
+  if (data.value === null) {
+    fill.style.width = '0%';
+    label.textContent = '未采集';
+    return;
+  }
+  const value = Number(data.value);
+  if (!Number.isFinite(value) || value < 0 || value > scaleMax) throw Error('Out of scale');
+  fill.style.width = `${value / scaleMax * 100}%`;
+  label.textContent = data.display;
+  row.title = `${data.display}; n=${data.n}`;
+}
+```
+
 ## 1. 维度均分雷达图
 
 **用途**:整体测试结果总览(屏 2.1)。
@@ -83,7 +115,7 @@
     t.setAttribute('font-size', '10');
     t.setAttribute('fill', d.value <= 6.5 ? '#8b2d2d' : '#5a5a55');
     t.setAttribute('font-weight', d.value <= 6.5 ? '500' : '400');
-    t.textContent = d.name + ' ' + d.value;
+    t.textContent = d.name + ' ' + Number(d.value).toFixed(2);
     labelsG.appendChild(t);
   });
 })();

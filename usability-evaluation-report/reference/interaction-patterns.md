@@ -187,8 +187,8 @@ function filterTable(severity, btn) {
     <div class="num">7</div>
   </summary>
   <div class="detail-content">
-    <p>P01(产品经理 · 5 年 · 每日多次)</p>
-    <p>P02(设计师 · 3 年 · 每日)</p>
+    <p>U01(产品经理 · 5 年 · 每日多次)</p>
+    <p>U02(设计师 · 3 年 · 每日)</p>
     <!-- ... -->
   </div>
 </details>
